@@ -1,0 +1,38 @@
+name: ghcr.io
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+  schedule:
+    - cron: "0 0 * * *"
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to ghcr.io registry
+        run: docker login https://ghcr.io -u token -p ${{ secrets.GH_TOKEN }}
+
+      - if: startsWith(github.ref, 'refs/heads/master')
+        run: echo "TAG=latest" >> $GITHUB_ENV
+
+      - if: startsWith(github.ref, 'refs/tags')
+        run: echo "TAG=$(git describe --tags)" >> $GITHUB_ENV
+
+      - name: Build & Push
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: ./
+          file: ./Dockerfile Base/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: ghcr.io/kangershub/shelltoolkit:latest
