@@ -26,6 +26,7 @@ qbit_trackers_list=$(curl -Ns https://raw.githubusercontent.com/XIU2/TrackersLis
 echo -e "\nmax-concurrent-downloads=7\nbt-tracker=$tracker_list" >> /usr/src/app/aria.conf
 echo -e "\nBittorrent\add_trackers=$=$qbit_trackers_list" >> /usr/src/app/qBittorrent.conf
 aria2c --conf-path="aria2.conf" -D
+mkdir .config/qBittorrent
 cp qBittorrent.conf .config/qBittorrent/qBittorrent.conf
 
 echo "SETUP COMPLETED"
