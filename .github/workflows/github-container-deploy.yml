@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Login to ghcr.io registry
-        run: docker login https://ghcr.io -u token -p ${{ secrets.GITHUB_TOKEN }}
+        run: docker login https://ghcr.io -u token -p ${{ secrets.github.token }}
 
       - if: startsWith(github.ref, 'refs/heads/master')
         run: echo "TAG=latest" >> $GITHUB_ENV
